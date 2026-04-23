@@ -1,4 +1,4 @@
-# 🏦 Secure Banking Application
+# Secure Banking Application
 
 A full-stack banking app with login and PIN validation.
 
