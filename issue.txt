@@ -1,0 +1,20 @@
+Issue: Pin Reset
+
+The PIN reset currently exists but has a critical limitation:
+- Users can successfully reset their PIN to ANY value without validation
+- There are no restrictions on what constitutes a valid PIN
+- This creates security and usability issues as PINs should follow specific criteria
+
+How to Reproduce the Issue: 
+1. Login with trial account:
+        Username: john
+        Password: john
+        PIN: 1234
+2. Observe the input is invalid and will not register a new pin.
+
+The reset-pin endpoint must enforce the following validation criteria for new PINs:
+   - The PIN must be exactly 4 digits long
+   - The PIN value must be positive (contain only numeric digits)
+   - The PIN cannot consist of 4 identical digits
+
+When any of these criteria are not met, do not let the user reset their password.

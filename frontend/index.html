@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Banking Application</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen active">
+      <div class="card">
+        <div class="header">
+          <h1>Banking Application</h1>
+          <p>Login to Your Account</p>
+        </div>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Enter your username" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+          <div id="loginError" class="error-message"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- PIN Screen -->
+    <div id="pinScreen" class="screen">
+      <div class="card">
+        <div class="header">
+          <h1>Enter PIN</h1>
+          <p id="pinUsername"></p>
+        </div>
+        <form id="pinForm">
+          <div class="form-group">
+            <label for="pin">4-Digit PIN</label>
+            <input type="password" id="pin" placeholder="Enter your PIN" maxlength="4" inputmode="numeric" required>
+            <div class="pin-display">
+              <span id="pinDots">• • • •</span>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Verify PIN</button>
+          <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
+          <div id="pinError" class="error-message"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboardScreen" class="screen">
+      <div class="dashboard">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+          <div class="user-info">
+            <h3 id="dashboardUsername"></h3>
+            <p id="accountNumber"></p>
+          </div>
+          <ul class="nav-menu">
+            <li><a href="#" onclick="showTab('overview')" class="nav-link active">Overview</a></li>
+            <li><a href="#" onclick="showTab('transfer')" class="nav-link">Transfer Money</a></li>
+            <li><a href="#" onclick="showTab('transactions')" class="nav-link">Transactions</a></li>
+            <li><a href="#" onclick="showTab('security')" class="nav-link">Security</a></li>
+          </ul>
+          <button class="btn btn-danger" onclick="logout()">Logout</button>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+          <!-- Overview Tab -->
+          <div id="overviewTab" class="tab active">
+            <div class="header">
+              <h2>Account Overview</h2>
+            </div>
+            <div class="card">
+              <div class="balance-card">
+                <h3>Account Balance</h3>
+                <p class="balance-amount" id="displayBalance">$0.00</p>
+                <p class="account-type">Checking Account</p>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Account Details</h3>
+              <div class="details-grid">
+                <div class="detail-item">
+                  <span class="label">Account Number</span>
+                  <span class="value" id="detailAccountNumber">-</span>
+                </div>
+                <div class="detail-item">
+                  <span class="label">Account Type</span>
+                  <span class="value">Checking</span>
+                </div>
+                <div class="detail-item">
+                  <span class="label">Status</span>
+                  <span class="value status-active">Active</span>
+                </div>
+                <div class="detail-item">
+                  <span class="label">Last Login</span>
+                  <span class="value" id="lastLogin">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transfer Tab -->
+          <div id="transferTab" class="tab">
+            <div class="header">
+              <h2>Transfer Money</h2>
+            </div>
+            <div class="card">
+              <form id="transferForm">
+                <div class="form-group">
+                  <label for="transferAmount">Amount</label>
+                  <input type="number" id="transferAmount" placeholder="Enter amount" min="0.01" step="0.01" required>
+                </div>
+                <div class="form-group">
+                  <label for="transferRecipient">Recipient Account Number</label>
+                  <input type="text" id="transferRecipient" placeholder="Enter recipient account number" required>
+                </div>
+                <div class="form-group">
+                  <label for="transferDescription">Description</label>
+                  <input type="text" id="transferDescription" placeholder="Enter transfer description">
+                </div>
+                <button type="submit" class="btn btn-primary">Send Transfer</button>
+                <div id="transferError" class="error-message"></div>
+                <div id="transferSuccess" class="success-message"></div>
+              </form>
+            </div>
+            <div id="transferInfo" class="card">
+              <h4>Quick Reference</h4>
+              <p><strong>Available Recipients:</strong></p>
+              <ul>
+                <li>John: 1009876543</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Transactions Tab -->
+          <div id="transactionsTab" class="tab">
+            <div class="header">
+              <h2>Recent Transactions</h2>
+            </div>
+            <div class="card">
+              <div id="transactionsList" class="transactions-list">
+                <p class="no-data">No transactions yet</p>
+              </div>
+            </div>
+          </div>
+            <div class="card">
+              <h3>Reset PIN</h3>
+              <p>Change your 4-digit PIN for added security</p>
+              <button class="btn btn-primary" onclick="showResetPinModal()">Reset PIN</button>
+              <div id="resetPinError" class="error-message"></div>
+              <div id="resetPinSuccess" class="success-message"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reset PIN Modal -->
+    <div id="resetPinModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Reset Your PIN</h2>
+          <button type="button" class="modal-close" onclick="closeResetPinModal()">×</button>
+        </div>
+        <form id="resetPinForm">
+          <div class="form-group">
+            <label for="currentPin">Current PIN</label>
+            <input type="password" id="currentPin" placeholder="Enter your current PIN" maxlength="8" inputmode="numeric" required>
+          </div>
+          <div class="form-group">
+            <label for="newPin">New PIN</label>
+            <input type="password" id="newPin" placeholder="Enter your new PIN" maxlength="8" inputmode="numeric" required>
+          </div>
+          <div class="form-group">
+            <label for="confirmPin">Confirm New PIN</label>
+            <input type="password" id="confirmPin" placeholder="Confirm your new PIN" maxlength="8" inputmode="numeric" required>
+          </div>
+          <div class="modal-buttons">
+            <button type="submit" class="btn btn-primary">Reset PIN</button>
+            <button type="button" class="btn btn-secondary" onclick="closeResetPinModal()">Cancel</button>
+          </div>
+          <div id="modalResetPinError" class="error-message"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

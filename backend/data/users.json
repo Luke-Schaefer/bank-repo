@@ -1,0 +1,11 @@
+[
+  {
+    "id": 2,
+    "username": "john",
+    "password": "john",
+    "pin": "aaaaa",
+    "accountBalance": 10000,
+    "accountNumber": "1009876543",
+    "email": "john@bank.com"
+  }
+]
