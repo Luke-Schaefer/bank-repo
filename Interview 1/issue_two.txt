@@ -1,0 +1,10 @@
+Issue: Fraud Detection
+The system currently lacks any fraud detection features, making it unable to detect fraudulent behavior. 
+This creates significant security vulnerabilities as there are no mechanisms to prevent abuse such as excessive login attempts or frequent PIN changes.
+
+How to Implement the Feature:
+To add fraud detection capabilities, implement rate limiting on the backend for user actions. 
+- Restrict login attempts to a maximum of 5 times per hour per user
+- Limit PIN changes to 1 time per hour per user. 
+
+This can be achieved by tracking user activity timestamps in the backend and returning appropriate error responses when limits are exceeded.

@@ -1,0 +1,11 @@
+Issue: Balance Not Updating After Deposit
+
+The system fails to update the user's account balance correctly after a successful deposit transaction. This results in users seeing incorrect balance information, leading to confusion and potential financial discrepancies.
+
+How to Reproduce the Bug:
+1. Login with a valid user account (e.g., Username: john, Password: john, PIN: 1234)
+2. Initiate a deposit transaction for a specific amount (e.g., $100)
+3. Check the account balance immediately after the transaction
+4. Observe that the balance does not reflect the deposited amount
+
+The deposit endpoint must properly update the user's balance in the database and return the correct updated balance in the response.

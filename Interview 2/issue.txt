@@ -1,0 +1,11 @@
+Issue: Audit Logging
+
+The system currently does not maintain audit logs for user actions, making it difficult to track changes, detect unauthorized activities, or comply with regulatory requirements. This lack of logging creates accountability issues and hinders forensic analysis in case of security incidents.
+
+How to Implement the Feature:
+To add audit logging capabilities, implement comprehensive logging on the backend for all critical user actions. 
+
+Key actions to log:
+- Successful and failed logins, PIN changes, and any transaction-related activities. 
+- Store logs in a secure manner with user identifiers, action types, and relevant details. 
+- Ensure logs are accessible only to authorized administrators and retained according to compliance standards.

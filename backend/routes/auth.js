@@ -148,13 +148,18 @@ router.post('/transfer', (req, res) => {
       return res.status(404).json({ error: 'Recipient not found' });
     }
 
-    if (users[senderIndex].accountBalance < amount) {
+    const transferAmount = parseFloat(amount);
+    if (isNaN(transferAmount)) {
+      return res.status(400).json({ error: 'Invalid transfer amount' });
+    }
+
+    if (users[senderIndex].accountBalance < transferAmount) {
       return res.status(400).json({ error: 'Insufficient balance' });
     }
 
     // Process transfer
-    users[senderIndex].accountBalance -= amount;
-    users[recipientIndex].accountBalance += amount;
+    users[senderIndex].accountBalance -= transferAmount;
+    users[recipientIndex].accountBalance += transferAmount;
 
     // Save updated users
     saveUsers(users);
@@ -173,6 +178,44 @@ router.post('/transfer', (req, res) => {
   } catch (error) {
     console.error('Transfer error:', error);
     res.status(500).json({ error: 'Transfer failed' });
+  }
+});
+
+// Deposit money endpoint
+router.post('/deposit', (req, res) => {
+  try {
+    const { username, amount, token } = req.body;
+
+    if (!username || !amount || !token) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // Load users
+    let users = loadUsers();
+    const userIndex = users.findIndex((u) => u.username === username);
+
+    if (userIndex === -1) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const depositAmount = parseFloat(amount);
+    if (isNaN(depositAmount) || depositAmount <= 0) {
+      return res.status(400).json({ error: 'Invalid deposit amount' });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Deposit completed successfully',
+      newBalance: users[userIndex].accountBalance,
+      transaction: {
+        type: 'deposit',
+        amount: depositAmount,
+        timestamp: new Date().toISOString(),
+      },
+    });
+  } catch (error) {
+    console.error('Deposit error:', error);
+    res.status(500).json({ error: 'Deposit failed' });
   }
 });
 

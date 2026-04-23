@@ -20,11 +20,11 @@ A full-stack banking app with login and PIN validation.
 ```bash
 cd backend
 npm install
-npm start
+npm run dev
 ```
-Backend runs on `http://localhost:5001`
+Backend runs on `http://localhost:5001` with auto-reload enabled.
 
-### 2. Frontend Setup
+#### 2. Frontend Setup
 ```bash
 cd frontend
 python3 -m http.server 3000
