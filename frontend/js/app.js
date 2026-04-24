@@ -10,12 +10,14 @@ const dashboardScreen = document.getElementById('dashboardScreen');
 const loginForm = document.getElementById('loginForm');
 const pinForm = document.getElementById('pinForm');
 const transferForm = document.getElementById('transferForm');
+const depositForm = document.getElementById('depositForm');
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
   loginForm.addEventListener('submit', handleLogin);
   pinForm.addEventListener('submit', handlePinSubmit);
   transferForm.addEventListener('submit', handleTransfer);
+  depositForm.addEventListener('submit', handleDeposit);
   document.getElementById('pin').addEventListener('input', updatePinDisplay);
 });
 
@@ -146,6 +148,8 @@ function updateLastLogin() {
 
 // Show Tab
 function showTab(tabName) {
+  event.preventDefault();
+  
   // Hide all tabs
   document.querySelectorAll('.tab').forEach((tab) => tab.classList.remove('active'));
   
@@ -214,6 +218,64 @@ async function handleTransfer(e) {
     addTransaction('Transfer', -amount, `To: ${recipientAccount}`);
   } catch (error) {
     console.error('Transfer error:', error);
+    errorDiv.textContent = error.message;
+    errorDiv.classList.add('show');
+  }
+}
+
+// Handle Deposit
+async function handleDeposit(e) {
+  e.preventDefault();
+  
+  const amount = parseFloat(document.getElementById('depositAmount').value);
+  const description = document.getElementById('depositDescription').value || 'Deposit';
+  const errorDiv = document.getElementById('depositError');
+  const successDiv = document.getElementById('depositSuccess');
+  
+  // Clear messages
+  errorDiv.classList.remove('show');
+  successDiv.classList.remove('show');
+  errorDiv.textContent = '';
+  successDiv.textContent = '';
+  
+  if (amount <= 0) {
+    errorDiv.textContent = 'Please enter a valid amount';
+    errorDiv.classList.add('show');
+    return;
+  }
+  
+  try {  
+    // Process deposit
+    const response = await fetch(`${API_URL}/auth/deposit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: currentUser.username,
+        amount,
+        token: currentSession,
+      }),
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.error || 'Deposit failed');
+    }
+    
+    // Update balance and show success
+    currentUser.accountBalance = data.newBalance;
+    updateBalance();
+    
+    successDiv.textContent = `✓ Deposit of $${amount.toFixed(2)} completed successfully!`;
+    successDiv.classList.add('show');
+    
+    // Reset form
+    depositForm.reset();
+    
+    // Add to transaction history
+    addTransaction('Deposit', amount, description);
+  } catch (error) {
+    console.error('Deposit error:', error);
     errorDiv.textContent = error.message;
     errorDiv.classList.add('show');
   }
