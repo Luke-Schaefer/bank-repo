@@ -145,10 +145,6 @@ router.post('/transfer', (req, res) => {
       (u) => u.accountNumber === recipientAccount
     );
     const transferAmount = parseFloat(amount);
-    
-    // Process transfer
-    users[senderIndex].accountBalance -= transferAmount;
-    users[recipientIndex].accountBalance += transferAmount;
 
     // Save updated users
     saveUsers(users);
