@@ -3,12 +3,11 @@ Issue: User Registration
 The system currently does not support user registration, requiring manual addition of users to the data file. This limits scalability and user onboarding.
 
 How to Implement the Feature:
-To add user registration capabilities, implement a backend endpoint that allows new users to create accounts. 
+To add user registration capabilities, implement a backend endpoint that allows new users to create accounts at the dashboard. 
 
 The endpoint should accept:
 - username, password, email, and initial account details, validate uniqueness of username and email, 
 - generate a secure PIN and account number
 - set an initial balance
-- store the new user in the database. 
 
-Ensure proper input validation and security measures to prevent abuse.
+Note: This will also require a small modification to the frontend login page.
