@@ -144,19 +144,8 @@ router.post('/transfer', (req, res) => {
     const recipientIndex = users.findIndex(
       (u) => u.accountNumber === recipientAccount
     );
-    if (recipientIndex === -1) {
-      return res.status(404).json({ error: 'Recipient not found' });
-    }
-
     const transferAmount = parseFloat(amount);
-    if (isNaN(transferAmount)) {
-      return res.status(400).json({ error: 'Invalid transfer amount' });
-    }
-
-    if (users[senderIndex].accountBalance < transferAmount) {
-      return res.status(400).json({ error: 'Insufficient balance' });
-    }
-
+    
     // Process transfer
     users[senderIndex].accountBalance -= transferAmount;
     users[recipientIndex].accountBalance += transferAmount;

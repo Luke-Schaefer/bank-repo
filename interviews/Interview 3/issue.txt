@@ -1,11 +1,13 @@
-Issue: Transfer Allows Negative Amounts
+Issue: Transfer
 
-The transfer endpoint does not validate that the transfer amount is positive, allowing users to input negative values which result in unintended balance changes (effectively reversing the transfer direction).
+The transfer endpoint does not validate the transfer, and is broken.
 
 How to Reproduce the Bug:
 1. Login with a valid user account (e.g., Username: john, Password: john, PIN: 1234)
-2. Attempt to transfer a negative amount (e.g., -100) to another account
-3. Observe that the balances are modified in the reverse direction (sender gains, recipient loses)
-4. The endpoint returns success despite the invalid operation
+2. Attempt to transfer a amount (e.g., 100) to another account
+3. Observe that the balances are not updated and the function is broken.
 
-The transfer endpoint must validate that the amount is a positive number before processing the transaction.
+The transfer endpoint must validate the following:
+- The amount is a positive number before processing the transaction.
+- The description has been filled out.
+- The transfer occurs and the balance is updated.
